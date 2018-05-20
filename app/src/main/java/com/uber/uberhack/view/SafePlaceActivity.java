@@ -1,7 +1,9 @@
-package com.uber.uberhack;
+package com.uber.uberhack.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.uber.uberhack.R;
 
 public class SafePlaceActivity extends AppCompatActivity {
 

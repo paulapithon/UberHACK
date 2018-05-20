@@ -1,4 +1,4 @@
-package com.uber.uberhack;
+package com.uber.uberhack.view;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.uber.uberhack.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        startService(new Intent(this, SpeechRecognitionService.class));
+        startService(new Intent(this, com.uber.uberhack.SpeechRecognitionService.class));
 
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
