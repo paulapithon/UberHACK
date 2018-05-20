@@ -185,7 +185,7 @@ public class SpeechRecognitionService extends Service {
                                         longi = -34.8681825;
                                     }
 
-                                    smsManager.sendTextMessage("8199828858585", null, "Estou em perigo. Minha localização é: " + "https://maps.google.com/?ll="+latti+","+longi+" e isso é o que está acontecendo na minha câmera: " + downloadUrl.toString() + ". Fique alerta.", null, null);
+                                    smsManager.sendTextMessage(UberHACKApplication.pessoaTelefone, null, "Estou em perigo. Minha localização é: " + "https://maps.google.com/?ll="+latti+","+longi+" e isso é o que está acontecendo na minha câmera: " + downloadUrl.toString() + ". Fique alerta.", null, null);
 
                                 }
                             })
