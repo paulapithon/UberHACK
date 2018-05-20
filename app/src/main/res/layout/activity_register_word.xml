@@ -18,6 +18,7 @@
         android:fontFamily="@font/muli"
         android:text="ESCOLHER MINHA PALAVRA CHAVE"
         android:textColor="#fff"
+        android:onClick="onWord"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

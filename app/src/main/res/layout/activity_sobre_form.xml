@@ -56,6 +56,7 @@
         android:inputType="text"
         android:singleLine="false"
         android:text="Nome"
+        android:onClick="onClickSobre"
         android:textColor="#2fa9ba"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

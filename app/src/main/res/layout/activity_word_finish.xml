@@ -20,8 +20,9 @@
 
     <Button
 
-        android:id="@+id/btn_comoassim3"
+        android:id="@+id/btn_denovo"
 
+        android:onClick="onDeNovo"
         android:layout_width="185dp"
         android:layout_height="37dp"
         android:layout_marginBottom="96dp"
@@ -44,11 +45,12 @@
 
     <Button
 
-        android:id="@+id/btn_certo3"
+        android:id="@+id/btn_terminar"
 
         android:layout_width="185dp"
         android:layout_height="37dp"
-        android:layout_marginBottom="152dp"
+        android:onClick="onTerminar"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -59,7 +61,7 @@
         android:radius="10dp"
         android:text="ISSO MESMO"
         android:textColor="#FF2FA9BA"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_denovo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,21 +72,29 @@
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="80dp"
         android:fontFamily="@font/muli"
         android:text="Sua palavra chave é "
         android:textColor="#fff"
         android:textSize="20sp"
-        tools:layout_editor_absoluteX="96dp"
-        tools:layout_editor_absoluteY="191dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView20"
+        android:id="@+id/safe_word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/muli_bold"
         android:text="cachorro"
         android:textColor="#fff"
         android:textSize="30sp"
-        tools:layout_editor_absoluteX="129dp"
-        tools:layout_editor_absoluteY="220dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
 </android.support.constraint.ConstraintLayout>

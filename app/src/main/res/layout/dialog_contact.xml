@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/muli"
+        android:padding="5dp"
+        android:text="Nome" />
+
+    <EditText
+        android:id="@+id/nome_contato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:fontFamily="@font/muli"
+        android:inputType="textPersonName"
+        android:padding="5dp" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/muli"
+        android:padding="5dp"
+        android:text="Telefone" />
+
+    <EditText
+        android:id="@+id/telefone_contato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ems="10"
+        android:fontFamily="@font/muli"
+        android:inputType="textAutoComplete|textPersonName|number"
+        android:padding="5dp" />
+
+</LinearLayout>

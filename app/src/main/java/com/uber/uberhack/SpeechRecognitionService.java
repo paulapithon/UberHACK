@@ -1,8 +1,7 @@
-package com.uber.uberhack.view;
+package com.uber.uberhack;
 
 import android.annotation.SuppressLint;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -12,10 +11,14 @@ import android.hardware.Camera;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.IBinder;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -26,8 +29,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.uber.uberhack.R;
-import com.uber.uberhack.SpeechRecognitionService;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,39 +39,115 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by paula on 19/05/18.
+ */
 
-    final String TAG = "CAMERA";
-    Camera camera;
-    File picFile;
-    LocationManager locationManager;
+public class SpeechRecognitionService extends Service {
 
+    private SpeechRecognizer sr;
+    private static final String TAG = "MyStt3Activity";
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
 
-        startService(new Intent(this, SpeechRecognitionService.class));
-
-        BroadcastReceiver receiver = new BroadcastReceiver() {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        sr = SpeechRecognizer.createSpeechRecognizer(this);
+        sr.setRecognitionListener(new RecognitionListener() {
             @Override
-            public void onReceive(Context context, Intent intent) {
-                capture();
+            public void onReadyForSpeech(Bundle params) {
+                Log.d(TAG, "onReadyForSpeech");
             }
-        };
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("TIRARFOTO");
-        registerReceiver(receiver, filter);
+            public void onBeginningOfSpeech() {
+                Log.d(TAG, "onBeginningOfSpeech");
+            }
+
+            public void onRmsChanged(float rmsdB) {
+                Log.d(TAG, "onRmsChanged");
+            }
+
+            public void onBufferReceived(byte[] buffer) {
+                Log.d(TAG, "onBufferReceived");
+            }
+
+            public void onEndOfSpeech() {
+                Log.d(TAG, "onEndofSpeech");
+            }
+
+            public void onError(int error) {
+                Log.d(TAG, "error " + error);
+                startRecognitionIntent();
+            }
+
+            public void onResults(Bundle results) {
+                String str = new String();
+                Log.d(TAG, "onResults " + results);
+                ArrayList data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                for (int i = 0; i < data.size(); i++) {
+                    Log.d(TAG, "result " + data.get(i));
+                    str += data.get(i);
+
+                    if (UberHACKApplication.safeWord == null) {
+                        UberHACKApplication.safeWord =  data.get(i).toString();
+                        sendBroadcast(new Intent("TIRARFOTO"));
+
+                    } else {
+                        if (data.get(i).toString().toLowerCase().contains(UberHACKApplication.safeWord.toLowerCase())) {
+                            sendDistressMessage();
+                        }
+                    }
+                    startRecognitionIntent();
+                }
+
+            }
+
+            public void onPartialResults(Bundle partialResults) {
+                Log.d(TAG, "onPartialResults");
+            }
+
+            public void onEvent(int eventType, Bundle params) {
+                Log.d(TAG, "onEvent " + eventType);
+            }
+        });
+        Log.d(TAG, "Service Started.");
+        startRecognitionIntent();
 
     }
 
+    private void startRecognitionIntent () {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,"voice.recognition.test");
 
-    public void capture() {
+        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,5);
+        sr.startListening(intent);
+    }
+
+    private void sendDistressMessage () {
+        Camera camera = Camera.open();
+        try {
+            camera.setPreviewDisplay(new SurfaceView(getBaseContext()).getHolder());
+            camera.startPreview();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         Camera.PictureCallback pictureCB = new Camera.PictureCallback() {
             public void onPictureTaken(byte[] data, Camera cam) {
-                picFile  = getOutputMediaFile(0);
+                File picFile  = getOutputMediaFile(0);
                 if (picFile == null) {
                     Log.e(TAG, "Couldn't create media file; check storage permissions?");
                     return;
@@ -81,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
                     fos.write(data);
                     fos.close();
                     Bitmap bitmap = BitmapFactory.decodeFile(picFile.getAbsolutePath());
-                    ((ImageView) findViewById(R.id.foto)).setImageBitmap(bitmap);
 
                     StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
                     Uri file = Uri.fromFile(picFile);
@@ -150,5 +226,5 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
-
 }
+

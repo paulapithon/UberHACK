@@ -20,14 +20,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".UberHACKApplication">
-        <activity android:name=".view.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".view.MainActivity"/>
         <service android:enabled="true" android:name=".SpeechRecognitionService"/>
+        <activity android:name=".view.AddSafePlaceActivity"/>
+        <activity android:name=".view.FinishActivity"/>
+        <activity android:name=".view.HelloActivity"/>
+        <activity android:name=".view.ListPeoplesActivity"/>
+        <activity android:name=".view.ListSafePlaceActivity"/>
+        <activity android:name=".view.LoginActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
+        <activity android:name=".view.PeoplesActivity"/>
+        <activity android:name=".view.RecordActivity"/>
+        <activity android:name=".view.RegisterWordActivity"/>
+        <activity android:name=".view.SafePlaceActivity"/>
+        <activity android:name=".view.SobreFormActivity"/>
+        <activity android:name=".view.WordFinishActivity"/>
     </application>
 
 </manifest>

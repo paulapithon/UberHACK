@@ -9,10 +9,11 @@ import android.app.Application;
 public class UberHACKApplication extends Application {
 
     public static String safeWord;
+    public static String pessoaNome;
+    public static String pessoaTelefone;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        safeWord = "cachorro";
     }
 }

@@ -41,7 +41,7 @@
     <TextView
         android:id="@+id/textView7"
         android:layout_width="277dp"
-        android:layout_height="62dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -81,6 +81,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:onClick="onDoneLocais"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_buttonnegative"
         android:fontFamily="@font/muli"
