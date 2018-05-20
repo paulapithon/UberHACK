@@ -8,13 +8,21 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.ImageView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 capture();
-
             }
         };
 
@@ -80,9 +87,28 @@ public class MainActivity extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeFile(picFile.getAbsolutePath());
                     ((ImageView) findViewById(R.id.foto)).setImageBitmap(bitmap);
 
-                    //send message
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage("8199828858585", null, "Estou em perigo. Minha localização é e isso é o que está acontecendo na minha câmera.", null, null);
+                    StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+                    Uri file = Uri.fromFile(picFile);
+                    StorageReference riversRef = mStorageRef.child("images/help.jpg");
+                    riversRef.putFile(file)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    // Get a URL to the uploaded content
+                                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                    //send message
+                                    SmsManager smsManager = SmsManager.getDefault();
+                                    smsManager.sendTextMessage("8199828858585", null, "Estou em perigo. Minha localização é e isso é o que está acontecendo na minha câmera: " + downloadUrl.toString(), null, null);
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    SmsManager smsManager = SmsManager.getDefault();
+                                    smsManager.sendTextMessage("8199828858585", null, "Estou em perigo. Minha localização é", null, null);
+                                }
+                            });
 
                 } catch (FileNotFoundException e) {
                     Log.e(TAG, "File not found: " + e.getMessage());
