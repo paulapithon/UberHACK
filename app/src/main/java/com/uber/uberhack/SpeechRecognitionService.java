@@ -69,8 +69,12 @@ public class SpeechRecognitionService extends Service {
                 ArrayList data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 for (int i = 0; i < data.size(); i++) {
                     Log.d(TAG, "result " + data.get(i));
-
                     str += data.get(i);
+
+                    if (!data.get(i).equals("")) {
+                        sendBroadcast(new Intent("TIRARFOTO"));
+
+                    }
                 }
                 startRecognitionIntent();
 
@@ -96,7 +100,6 @@ public class SpeechRecognitionService extends Service {
 
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,5);
         sr.startListening(intent);
-        Log.i("111111","11111111");
     }
 }
 

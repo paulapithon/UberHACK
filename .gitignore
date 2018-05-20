@@ -1,0 +1,10 @@
+
+build/android-profile/
+
+\.idea/
+
+\.gradle/4\.1/fileHashes/
+
+\.gradle/4\.1/javaCompile/
+
+\.gradle/4\.1/taskHistory/
