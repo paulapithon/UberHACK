@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "586940246818",
+    "firebase_url": "https://uberhack-b428b.firebaseio.com",
+    "project_id": "uberhack-b428b",
+    "storage_bucket": "uberhack-b428b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586940246818:android:d4b55f14957c4e39",
+        "android_client_info": {
+          "package_name": "com.uber.uberhack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586940246818-i10nebnksbq9hhi7p6uc73tun0vqivsg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uber.uberhack",
+            "certificate_hash": "6abf107d69c61a8f5d4722a29bd739e2dad8398b"
+          }
+        },
+        {
+          "client_id": "586940246818-kfal39e62c8f28nbegsiqn95ilam3oa3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXWKDRH25BUpk0ohiFTYViXIl1iNea6Ds"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586940246818-kfal39e62c8f28nbegsiqn95ilam3oa3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
