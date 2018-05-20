@@ -8,3 +8,5 @@ build/android-profile/
 \.gradle/4\.1/javaCompile/
 
 \.gradle/4\.1/taskHistory/
+
+app/app\.iml

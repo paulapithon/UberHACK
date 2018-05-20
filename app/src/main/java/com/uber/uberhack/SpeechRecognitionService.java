@@ -71,9 +71,8 @@ public class SpeechRecognitionService extends Service {
                     Log.d(TAG, "result " + data.get(i));
                     str += data.get(i);
 
-                    if (!data.get(i).equals("")) {
+                    if (data.get(i).toString().toLowerCase().contains(UberHACKApplication.safeWord.toLowerCase())) {
                         sendBroadcast(new Intent("TIRARFOTO"));
-
                     }
                 }
                 startRecognitionIntent();
