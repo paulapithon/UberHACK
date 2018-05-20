@@ -8,23 +8,18 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.ImageView;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,37 +37,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        findViewById(R.id.btn_text).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-//                Uri uri = Uri.parse(MainActivity.this.picFile.getAbsolutePath());
-//                Intent i = new Intent(Intent.ACTION_SEND);
-//                i.putExtra("address","81998288585");
-//                i.putExtra("sms_body","This is the text mms");
-//                i.putExtra(Intent.EXTRA_STREAM,uri);
-//                i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                i.setType("image/png");
-//                startActivity(i);
-
-
-//                SmsManager manager = SmsManager.getDefault();
-//
-//                PendingIntent piSend = PendingIntent.getBroadcast(this, 0, new Intent(SMS_SENT), 0);
-//                PendingIntent piDelivered = PendingIntent.getBroadcast(this, 0, new Intent(SMS_DELIVERED), 0);
-//
-//                manager.sendDataMessage(phonenumber, null, (short) SMS_PORT, data,piSend, piDelivered);
-
-
-//                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-//                sendIntent.putExtra("address","81998288585");
-//                sendIntent.putExtra("sms_body", "default content");
-//                sendIntent.setType("vnd.android-dir/mms-sms");
-//                startActivity(sendIntent);
-            }
-        });
 
         camera = Camera.open();
         try {
@@ -97,9 +61,6 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction("TIRARFOTO");
         registerReceiver(receiver, filter);
 
-        //send message
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage("8199828858585", null, "sms message", null, null);
     }
 
 
@@ -119,7 +80,9 @@ public class MainActivity extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeFile(picFile.getAbsolutePath());
                     ((ImageView) findViewById(R.id.foto)).setImageBitmap(bitmap);
 
-
+                    //send message
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage("8199828858585", null, "Estou em perigo. Minha localização é e isso é o que está acontecendo na minha câmera.", null, null);
 
                 } catch (FileNotFoundException e) {
                     Log.e(TAG, "File not found: " + e.getMessage());
@@ -154,36 +117,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void sendSms(String phonenumber,String message, boolean isBinary)
-    {
+    private void sendSms(String phonenumber,String message, boolean isBinary) {
         SmsManager manager = SmsManager.getDefault();
-
         PendingIntent piSend = PendingIntent.getBroadcast(this, 0, new Intent("SMS_SENT"), 0);
         PendingIntent piDelivered = PendingIntent.getBroadcast(this, 0, new Intent("SMS_DELIVERED"), 0);
-
-        if(isBinary)
-        {
+        if(isBinary) {
             byte[] data = new byte[message.length()];
-
-            for(int index=0; index<message.length() && index < 160; ++index)
-            {
+            for(int index=0; index<message.length() && index < 160; ++index) {
                 data[index] = (byte)message.charAt(index);
             }
-
             manager.sendDataMessage(phonenumber, null, (short) 8888, data,piSend, piDelivered);
-        }
-        else
-        {
+        } else {
             int length = message.length();
-
-            if(length > 160)
-            {
+            if(length > 160) {
                 ArrayList<String> messagelist = manager.divideMessage(message);
-
                 manager.sendMultipartTextMessage(phonenumber, null, messagelist, null, null);
             }
-            else
-            {
+            else {
                 manager.sendTextMessage(phonenumber, null, message, piSend, piDelivered);
             }
         }
