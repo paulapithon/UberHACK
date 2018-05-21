@@ -306,7 +306,7 @@ public class SpeechRecognitionService extends Service {
             double longitude = location.getLongitude();
             // Enviar mensagem sms contendo informações
             SmsManager smsManager = SmsManager.getDefault();
-                            smsManager.sendTextMessage(UberHACKApplication.getSafePhone(), null, "Estou em perigo. Minha localização é: " + "https://maps.google.com/?ll="+latitude+","+longitude+" e isso é o que está acontecendo na minha câmera: " + downloadUrl.toString() + ". Fique alerta.", null, null);
+            smsManager.sendTextMessage(UberHACKApplication.getSafePhone(), null, "Estou em perigo. Localização: " + "https://maps.google.com/?ll=" + latitude + "," + longitude + "\n Câmera: " + imageUrl + "\nÁudio: " + audioUrl, null, null);
             //Enviar notificação
             sendNotification();
         }

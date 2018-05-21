@@ -28,7 +28,7 @@
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="430dp"
+        android:layout_width="0dp"
         android:layout_height="202dp"
         android:background="#2fa9ba"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -51,12 +51,12 @@
         android:text="Sua palavra de emergência"
         android:textColor="#fff"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
         app:layout_constraintEnd_toEndOf="@+id/imageView5"
         app:layout_constraintHorizontal_bias="0.075"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.108" />
+        app:layout_constraintVertical_bias="0.86" />
 
     <TextView
         android:id="@+id/textView7"
@@ -69,11 +69,11 @@
         android:fontFamily="@font/muli"
         android:text="O sistema de alarme é disparado por uma palavra-chave. Assim você não precisa se preocupar em pegar o celular quando estiver numa situação de perigo."
         android:textColor="#fff"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.186"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.226" />
+        app:layout_constraintVertical_bias="0.85" />
 
 </android.support.constraint.ConstraintLayout>

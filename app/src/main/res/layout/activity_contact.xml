@@ -70,12 +70,12 @@
         android:text="Pessoas de confiança"
         android:textColor="#fff"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
         app:layout_constraintEnd_toEndOf="@+id/imageView5"
         app:layout_constraintHorizontal_bias="0.075"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.108" />
+        app:layout_constraintVertical_bias="0.86" />
 
     <TextView
         android:id="@+id/textView7"
@@ -88,11 +88,11 @@
         android:fontFamily="@font/muli"
         android:text="Precisamos do contato das pessoas em que você mais confia. Elas receberão os alertas enviados por você."
         android:textColor="#fff"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.186"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.226" />
+        app:layout_constraintVertical_bias="0.86" />
 
 </android.support.constraint.ConstraintLayout>

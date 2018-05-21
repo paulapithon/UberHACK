@@ -8,7 +8,7 @@
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="432dp"
+        android:layout_width="0dp"
         android:layout_height="202dp"
         android:background="#2fa9ba"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,28 +20,6 @@
         app:srcCompat="@color/colorPrimary" />
 
     <EditText
-        android:id="@+id/input_nome3"
-        style="@style/Widget.AppCompat.AutoCompleteTextView"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="112dp"
-        android:autoText="false"
-        android:ems="10"
-        android:fontFamily="@font/muli"
-        android:hint="Data de Nascimento"
-        android:inputType="date"
-        android:singleLine="false"
-        android:textColor="#2fa9ba"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.516" />
-
-    <EditText
         android:id="@+id/input_nome"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:layout_width="0dp"
@@ -49,7 +27,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="32dp"
         android:autoText="false"
         android:ems="10"
         android:fontFamily="@font/muli"
@@ -61,66 +39,33 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.346" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView5"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/muli"
-        android:text="Olá,"
-        android:textColor="#fff"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imageView5"
-        app:layout_constraintHorizontal_bias="0.075"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.167" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="188dp"
-        android:layout_height="44dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/muli"
-        android:lineSpacingExtra="3sp"
-        android:text="conte-me um pouco mais sobre você."
-        android:textColor="#fff"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.155"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.263" />
-
-    <TextView
-        android:id="@+id/textView"
+    <EditText
+        android:id="@+id/input_nome3"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:text="Gênero"
-        android:textSize="18sp"
+        android:autoText="false"
+        android:ems="10"
+        android:fontFamily="@font/muli"
+        android:hint="Data de Nascimento"
+        android:inputType="date"
+        android:singleLine="false"
+        android:textColor="#2fa9ba"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.73" />
+        app:layout_constraintTop_toBottomOf="@+id/input_nome"
+        app:layout_constraintVertical_bias="0.0" />
 
     <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -131,8 +76,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.83">
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.0">
 
         <RadioButton
             android:id="@+id/radioButton2"
@@ -192,17 +137,72 @@
             app:layout_constraintVertical_bias="0.751" />
     </RadioGroup>
 
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="134dp"
-        android:layout_height="31dp"
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="onClickSobre"
+        android:fontFamily="@font/muli"
+        android:text="Olá,"
+        android:textColor="#fff"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView10"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.98" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="188dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/muli"
+        android:lineSpacingExtra="3sp"
+        android:text="conte-me um pouco mais sobre você."
+        android:textColor="#fff"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.155"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.90999997" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Gênero"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.09"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_nome3"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="134dp"
+        android:layout_height="31dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/bg_buttonnegative"
         android:fontFamily="@font/muli"
+        android:onClick="onClickSobre"
         android:text="PROSSEGUIR"
         android:textColor="#fff"
         android:textSize="12sp"
