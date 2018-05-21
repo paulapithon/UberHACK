@@ -11,13 +11,14 @@ import android.widget.EditText;
 import com.uber.uberhack.R;
 import com.uber.uberhack.UberHACKApplication;
 
-public class PeoplesActivity extends AppCompatActivity {
+public class ContactActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_peoples);
+        setContentView(R.layout.activity_contact);
     }
+
 
     public void onAddContact (View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -32,16 +33,14 @@ public class PeoplesActivity extends AppCompatActivity {
         builder.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                UberHACKApplication.pessoaNome = nome.getText().toString();
-                UberHACKApplication.pessoaTelefone = telefone.getText().toString();
+                if (!telefone.getText().toString().equals("")) {
+                    UberHACKApplication.setSafePhone(telefone.getText().toString());
 
-                startActivity(new Intent(PeoplesActivity.this, RegisterWordActivity.class));
-                finish();
+                    startActivity(new Intent(ContactActivity.this, RegisterWordActivity.class));
+                    finish();
+                }
             }
         });
-
         builder.show();
-
-
     }
 }

@@ -18,27 +18,24 @@ import java.util.ArrayList;
 
 public class RecordActivity extends AppCompatActivity {
 
-    String TAG = "Record";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
-        Intent intent = new Intent(this, SpeechRecognitionService.class);
-
         final BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                // Caso chegue, redirecionar para resultado
                 startActivity(new Intent(RecordActivity.this, WordFinishActivity.class));
                 finish();
             }
         };
 
+        // Registrar broacast caso chegue algum resultado
         IntentFilter filter = new IntentFilter();
         filter.addAction("TIRARFOTO");
         registerReceiver(receiver, filter);
-
-        startService(intent);
+        startService(new Intent(this, SpeechRecognitionService.class));
     }
 }

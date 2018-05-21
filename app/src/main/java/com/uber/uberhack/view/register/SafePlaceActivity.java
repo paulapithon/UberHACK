@@ -30,7 +30,7 @@ public class SafePlaceActivity extends AppCompatActivity {
         builder.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(SafePlaceActivity.this, PeoplesActivity.class));
+                startActivity(new Intent(SafePlaceActivity.this, ContactActivity.class));
                 finish();
             }
         });

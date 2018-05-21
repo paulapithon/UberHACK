@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.uber.uberhack.R;
+import com.uber.uberhack.SpeechRecognitionService;
 import com.uber.uberhack.UberHACKApplication;
 
 public class WordFinishActivity extends AppCompatActivity {
@@ -16,16 +17,23 @@ public class WordFinishActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_finish);
 
-        ((TextView)findViewById(R.id.safe_word)).setText(UberHACKApplication.safeWord);
+        // Setar palavra chave
+        if (!UberHACKApplication.getSafeWord().equals("")) {
+            ((TextView)findViewById(R.id.safe_word)).setText(UberHACKApplication.getSafeWord());
+            startService(new Intent(this, SpeechRecognitionService.class));
+        }
+
     }
 
+    // Terminar configuração
     public void onTerminar (View v) {
         startActivity(new Intent(this, FinishActivity.class));
         finish();
     }
 
+    // Registrar nova palavra chave
     public void onDeNovo (View v) {
-        UberHACKApplication.safeWord = null;
+        UberHACKApplication.setSafeWord("");
         startActivity(new Intent(this, RecordActivity.class));
         finish();
     }
