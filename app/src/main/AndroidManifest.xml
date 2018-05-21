@@ -3,42 +3,40 @@
     package="com.uber.uberhack">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".UberHACKApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".UberHACKApplication">
-        <activity android:name=".view.MainActivity"/>
-        <service android:enabled="true" android:name=".SpeechRecognitionService"/>
-        <activity android:name=".view.AddSafePlaceActivity"/>
-        <activity android:name=".view.FinishActivity"/>
-        <activity android:name=".view.HelloActivity"/>
-        <activity android:name=".view.ListPeoplesActivity"/>
-        <activity android:name=".view.ListSafePlaceActivity"/>
-        <activity android:name=".view.LoginActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        android:theme="@style/AppTheme">
+        <service
+            android:name=".service.SpeechRecognitionService"
+            android:enabled="true" />
+        <activity android:name=".view.register.FinishActivity" />
+        <activity android:name=".view.register.HelloActivity" />
+        <activity android:name=".view.register.ContactActivity" />
+        <activity android:name=".view.word.RecordActivity" />
+        <activity android:name=".view.word.RegisterWordActivity" />
+        <activity android:name=".view.register.SafePlaceActivity" />
+        <activity android:name=".view.register.AboutActivity"/>
+        <activity android:name=".view.word.WordFinishActivity" />
+        <activity android:name=".view.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
-        <activity android:name=".view.PeoplesActivity"/>
-        <activity android:name=".view.RecordActivity"/>
-        <activity android:name=".view.RegisterWordActivity"/>
-        <activity android:name=".view.SafePlaceActivity"/>
-        <activity android:name=".view.SobreFormActivity"/>
-        <activity android:name=".view.WordFinishActivity"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.uber.uberhack.view;
+package com.uber.uberhack.view.register;
 
 import android.Manifest;
 import android.content.Intent;

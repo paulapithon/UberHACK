@@ -1,4 +1,4 @@
-package com.uber.uberhack.view;
+package com.uber.uberhack.view.word;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.uber.uberhack.R;
-import com.uber.uberhack.SpeechRecognitionService;
+import com.uber.uberhack.service.SpeechRecognitionService;
 import com.uber.uberhack.UberHACKApplication;
+import com.uber.uberhack.view.register.FinishActivity;
 
 public class WordFinishActivity extends AppCompatActivity {
 

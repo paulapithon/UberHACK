@@ -1,4 +1,4 @@
-package com.uber.uberhack;
+package com.uber.uberhack.service;
 
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
@@ -28,6 +28,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.uber.uberhack.R;
+import com.uber.uberhack.UberHACKApplication;
 
 import java.io.File;
 import java.io.FileNotFoundException;

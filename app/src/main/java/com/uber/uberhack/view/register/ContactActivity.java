@@ -1,4 +1,4 @@
-package com.uber.uberhack.view;
+package com.uber.uberhack.view.register;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.uber.uberhack.R;
 import com.uber.uberhack.UberHACKApplication;
+import com.uber.uberhack.view.word.RegisterWordActivity;
 
 public class ContactActivity extends AppCompatActivity {
 
@@ -27,7 +28,6 @@ public class ContactActivity extends AppCompatActivity {
         builder.setView(view);
         builder.setTitle("Inserir Pessoa");
 
-        final EditText nome = view.findViewById(R.id.nome_contato);
         final EditText telefone = view.findViewById(R.id.telefone_contato);
 
         builder.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {

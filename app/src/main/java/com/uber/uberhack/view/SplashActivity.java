@@ -1,10 +1,12 @@
-package com.uber.uberhack;
+package com.uber.uberhack.view;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.uber.uberhack.R;
+import com.uber.uberhack.UberHACKApplication;
 import com.uber.uberhack.view.register.AboutActivity;
 import com.uber.uberhack.view.word.WordFinishActivity;
 
@@ -28,6 +30,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 3000);
+        }, 2500);
     }
 }

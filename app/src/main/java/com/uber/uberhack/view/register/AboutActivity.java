@@ -1,4 +1,4 @@
-package com.uber.uberhack.view;
+package com.uber.uberhack.view.register;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.uber.uberhack.R;
-import com.uber.uberhack.UberHACKApplication;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -16,10 +15,6 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        if (!UberHACKApplication.getSafeWord().equals("")) {
-            startActivity(new Intent(this, WordFinishActivity.class));
-            finish();
-        }
     }
     public void onClickSobre (View v) {
         EditText text = findViewById(R.id.input_nome);

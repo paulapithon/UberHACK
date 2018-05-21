@@ -1,4 +1,4 @@
-package com.uber.uberhack.view;
+package com.uber.uberhack.view.word;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

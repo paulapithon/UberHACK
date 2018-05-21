@@ -1,4 +1,4 @@
-package com.uber.uberhack.view;
+package com.uber.uberhack.view.register;
 
 import android.content.DialogInterface;
 import android.content.Intent;

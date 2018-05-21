@@ -1,20 +1,14 @@
-package com.uber.uberhack.view;
+package com.uber.uberhack.view.word;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.speech.RecognitionListener;
-import android.speech.SpeechRecognizer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.uber.uberhack.R;
-import com.uber.uberhack.SpeechRecognitionService;
-import com.uber.uberhack.UberHACKApplication;
-
-import java.util.ArrayList;
+import com.uber.uberhack.service.SpeechRecognitionService;
 
 public class RecordActivity extends AppCompatActivity {
 
