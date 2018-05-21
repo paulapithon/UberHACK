@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.IBinder;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -38,6 +40,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -49,6 +52,7 @@ public class SpeechRecognitionService extends Service {
     private SpeechRecognizer speechRecognizer;
 
     private static final String TAG = "SpeechRecognition";
+    private boolean processing;
 
     @Nullable
     @Override
@@ -106,7 +110,12 @@ public class SpeechRecognitionService extends Service {
                     // configurar mensagem de ajuda
                     else {
                         if (data.get(i).toString().toLowerCase().contains(UberHACKApplication.getSafeWord().toLowerCase())) {
-                            getCameraImage();
+                            // Caso não esteja processando uma requisição
+                            if (!processing) {
+                                getCameraFile();
+                                processing = true;
+                            }
+
                         }
                     }
                     startRecognitionIntent();
@@ -140,21 +149,27 @@ public class SpeechRecognitionService extends Service {
      * Tirar foto
      */
 
-    private void getCameraImage() {
+    private void getCameraFile() {
         // Abrir câmera
-        Camera camera = Camera.open();
+        final Camera camera = Camera.open();
         try {
-            camera.setPreviewDisplay(new SurfaceView(getBaseContext()).getHolder());
-            camera.startPreview();
+        Camera.Parameters params = camera.getParameters();
+        List<Camera.Size> sizes = params.getSupportedPictureSizes();
+        params.setPictureSize(sizes.get(sizes.size() - 1).width, sizes.get(sizes.size() - 1).height);
+        camera.setParameters(params);
+        camera.setPreviewDisplay(new SurfaceView(getBaseContext()).getHolder());
+        camera.startPreview();
         } catch (IOException e) {
             e.printStackTrace();
+            processing = false;
         }
         // Definir callback para quando uma imagem for encontrada
         Camera.PictureCallback pictureCB = new Camera.PictureCallback() {
             public void onPictureTaken(byte[] data, Camera cam) {
-                File picFile  = getOutputMediaFile();
+                File picFile  = getOutputMediaFile(true);
                 if (picFile == null) {
                     Log.e(TAG, "Couldn't create media file; check storage permissions?");
+                    processing = false;
                     return;
                 }
                 try {
@@ -166,17 +181,92 @@ public class SpeechRecognitionService extends Service {
                 } catch (FileNotFoundException e) {
                     Log.e(TAG, "File not found: " + e.getMessage());
                     e.getStackTrace();
+                    processing = false;
                 } catch (IOException e) {
                     Log.e(TAG, "I/O error writing file: " + e.getMessage());
                     e.getStackTrace();
+                    processing = false;
                 }
-                // Enviar mensagem
-                sendMessage(picFile);
+                camera.release();
+
+                // Salvar imagem no firebase
+                StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+                Uri file = Uri.fromFile(picFile);
+                StorageReference riversRef = mStorageRef.child("images/" + picFile.getName());
+                riversRef.putFile(file)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Log.d(TAG, "Imagem upada com sucesso!");
+                                // Pegar link para o arquivo
+                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                // Mandar gravar áudio
+                                    getAudioFile(downloadUrl.toString());
+                                }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                exception.printStackTrace();
+                                processing = false;
+                            }
+                        });
+
             }
         };
         // Tentar tirar foto
         camera.takePicture(null, null, pictureCB);
+    }
 
+    /**
+     * Gravar audio por 10 segundos
+     */
+
+    private void getAudioFile (final String imageUrl) {
+        final File outputFile = getOutputMediaFile(false);
+        // Iniciar recorder
+        final MediaRecorder myAudioRecorder = new MediaRecorder();
+        myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        myAudioRecorder.setOutputFile(outputFile.getPath());
+        try {
+            myAudioRecorder.prepare();
+            myAudioRecorder.start();
+            // Depois de 10 segundos, parar gravação
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    myAudioRecorder.stop();
+                    myAudioRecorder.release();
+
+                    // Salvar áudio no firebase
+                    StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+                    Uri file = Uri.fromFile(outputFile);
+                    StorageReference riversRef = mStorageRef.child("audio/" + outputFile.getName());
+                    riversRef.putFile(file)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    Log.d(TAG, "Audio upado com sucesso!");
+                                    // Pegar link para o arquivo e enviar mensagem
+                                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                    sendMessage(imageUrl, downloadUrl.toString());
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    exception.printStackTrace();
+                                    processing = false;
+                                }
+                            });
+                }
+            }, 10000);
+        } catch (IOException | IllegalStateException e) {
+            e.printStackTrace();
+            processing = false;
+        }
     }
 
     /**
@@ -184,60 +274,43 @@ public class SpeechRecognitionService extends Service {
      * @return arquivo da imagem
      */
 
-    private File getOutputMediaFile() {
+    private File getOutputMediaFile(boolean isImage) {
         File dir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), getPackageName());
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
                 Log.e(TAG, "Failed to create storage directory.");
+                processing = false;
                 return null;
             }
         }
         String timeStamp = new SimpleDateFormat("yyyMMdd_HHmmss", Locale.UK).format(new Date());
-        File file =  new File(dir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
-        return  file;
+        String extension = isImage ? "IMG_"+ timeStamp + ".jpg" : "AUD_"+ timeStamp + ".3gp";
+        return new File(dir.getPath() + File.separator + extension);
 
     }
 
     /**
-     * Enviar mensagem sms
-     * @param picFile arquivo da image
+     * Enviar mensagem com informações do usuário
+     * @param imageUrl url da imagem
+     * @param audioUrl url do áudio
      */
 
-    private void sendMessage (File picFile) {
+    private void sendMessage (String imageUrl, String audioUrl) {
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        // Salvar imagem no firebase
-        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-        Uri file = Uri.fromFile(picFile);
-        StorageReference riversRef = mStorageRef.child("images/" + picFile.getName());
-        riversRef.putFile(file)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Log.d(TAG, "Imagem upada com sucesso!");
-                        // Pegar link para o arquivo
-                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        // Pegar localização atual
-                        @SuppressLint("MissingPermission")
-                        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        if (location != null){
-                            double latitude = location.getLatitude();
-                            double longitude = location.getLongitude();
-                            // Enviar mensagem sms contendo informações
-                            SmsManager smsManager = SmsManager.getDefault();
+        // Pegar localização atual
+        @SuppressLint("MissingPermission")
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (location != null) {
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            // Enviar mensagem sms contendo informações
+            SmsManager smsManager = SmsManager.getDefault();
                             smsManager.sendTextMessage(UberHACKApplication.getSafePhone(), null, "Estou em perigo. Minha localização é: " + "https://maps.google.com/?ll="+latitude+","+longitude+" e isso é o que está acontecendo na minha câmera: " + downloadUrl.toString() + ". Fique alerta.", null, null);
-                            //Enviar notificação
-                            sendNotification();
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        exception.printStackTrace();
-                    }
-                });
+            //Enviar notificação
+            sendNotification();
+        }
+        processing = false;
     }
 
     /**
