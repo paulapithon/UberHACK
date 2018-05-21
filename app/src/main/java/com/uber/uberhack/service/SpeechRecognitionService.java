@@ -54,6 +54,8 @@ public class SpeechRecognitionService extends Service {
     private static final String TAG = "SpeechRecognition";
     private boolean processing;
 
+    private Camera camera;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -151,17 +153,19 @@ public class SpeechRecognitionService extends Service {
 
     private void getCameraFile() {
         // Abrir câmera
-        final Camera camera = Camera.open();
         try {
-        Camera.Parameters params = camera.getParameters();
-        List<Camera.Size> sizes = params.getSupportedPictureSizes();
-        params.setPictureSize(sizes.get(sizes.size() - 1).width, sizes.get(sizes.size() - 1).height);
-        camera.setParameters(params);
-        camera.setPreviewDisplay(new SurfaceView(getBaseContext()).getHolder());
-        camera.startPreview();
+            if (camera == null) {
+                camera = Camera.open();
+                Camera.Parameters params = camera.getParameters();
+                List<Camera.Size> sizes = params.getSupportedPictureSizes();
+                params.setPictureSize(sizes.get(sizes.size() - 1).width, sizes.get(sizes.size() - 1).height);
+                camera.setParameters(params);
+                camera.setPreviewDisplay(new SurfaceView(getBaseContext()).getHolder());
+                camera.startPreview();
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            processing = false;
+            getAudioFile("");
         }
         // Definir callback para quando uma imagem for encontrada
         Camera.PictureCallback pictureCB = new Camera.PictureCallback() {
@@ -169,7 +173,7 @@ public class SpeechRecognitionService extends Service {
                 File picFile  = getOutputMediaFile(true);
                 if (picFile == null) {
                     Log.e(TAG, "Couldn't create media file; check storage permissions?");
-                    processing = false;
+                    getAudioFile("");
                     return;
                 }
                 try {
@@ -181,11 +185,11 @@ public class SpeechRecognitionService extends Service {
                 } catch (FileNotFoundException e) {
                     Log.e(TAG, "File not found: " + e.getMessage());
                     e.getStackTrace();
-                    processing = false;
+                    getAudioFile("");
                 } catch (IOException e) {
                     Log.e(TAG, "I/O error writing file: " + e.getMessage());
                     e.getStackTrace();
-                    processing = false;
+                    getAudioFile("");
                 }
                 camera.release();
 
@@ -209,13 +213,19 @@ public class SpeechRecognitionService extends Service {
                             public void onFailure(@NonNull Exception exception) {
                                 exception.printStackTrace();
                                 processing = false;
+                                getAudioFile("");
                             }
                         });
 
             }
         };
         // Tentar tirar foto
-        camera.takePicture(null, null, pictureCB);
+        try {
+            camera.takePicture(null, null, pictureCB);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            getAudioFile("");
+        }
     }
 
     /**
@@ -259,6 +269,7 @@ public class SpeechRecognitionService extends Service {
                                 public void onFailure(@NonNull Exception exception) {
                                     exception.printStackTrace();
                                     processing = false;
+                                    sendMessage(imageUrl, "");
                                 }
                             });
                 }
@@ -266,6 +277,7 @@ public class SpeechRecognitionService extends Service {
         } catch (IOException | IllegalStateException e) {
             e.printStackTrace();
             processing = false;
+            sendMessage(imageUrl, "");
         }
     }
 
@@ -301,15 +313,24 @@ public class SpeechRecognitionService extends Service {
         // Pegar localização atual
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        String result = "Estou em perigo, fique em alerta. \n\nLocalização: " + "https://maps.google.com/?ll=";
         if (location != null) {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
-            // Enviar mensagem sms contendo informações
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(UberHACKApplication.getSafePhone(), null, "Estou em perigo. Localização: " + "https://maps.google.com/?ll=" + latitude + "," + longitude + "\n Câmera: " + imageUrl + "\nÁudio: " + audioUrl, null, null);
-            //Enviar notificação
-            sendNotification();
+           result += latitude + "," + longitude;
         }
+        if (!imageUrl.equals("")) {
+            result += "\nCâmera: " + imageUrl;
+        }
+        if (!audioUrl.equals("")) {
+            result += "\nÁudio: " + audioUrl;
+        }
+        // Enviar mensagem sms contendo informações
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(UberHACKApplication.getSafePhone(), null, result, null, null);
+        //Enviar notificação
+        sendNotification();
+
         processing = false;
     }
 
