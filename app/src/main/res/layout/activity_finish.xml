@@ -64,7 +64,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/muli"
-        android:text="o Segura foi configurado com sucesso. Apartir de agora seus deslocamentos serão feitos com mais segurança."
+        android:text="O Segura foi configurado com sucesso. A partir de agora seus deslocamentos serão feitos com mais segurança."
         android:textAlignment="center"
         android:textColor="#fff"
         android:textSize="15dp"
